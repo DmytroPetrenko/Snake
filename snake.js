@@ -9,7 +9,7 @@ function Squere(width = 10, height = 10, color = "green") {
 	this.color = color
 }
 
-function Snake(length = 3, color = "green", squere = null) {
+function Snake(length = 3, color = "green", squere = null, element) {
 	this.length = length
 	this.color = color
 
@@ -21,55 +21,59 @@ function Snake(length = 3, color = "green", squere = null) {
 
 	this.width = this.squere.width * this.length
 	this.height = this.squere.height
+	this.left = 200
+	this.top = 200
+	var wrapper = this
 
-  this.move = window.addEventListener(
-		"keydown",
-		function (event) {
-			if (event.defaultPrevented) {
-				return // Do nothing if the event was already processed
-			}
+	elStyle = element.style
+	elStyle.width = this.width + "px"
+	elStyle.height = this.height + "px"
+	elStyle.backgroundColor = this.color
+	elStyle.position = "absolute"
+	elStyle.left = this.left + "px"
+	elStyle.top = this.top + "px"
 
-			switch (event.key) {
-				case "Down": // IE/Edge specific value
-				case "ArrowDown":
-					
-					// Do something for "down arrow" key press.
-					break
-				case "Up": // IE/Edge specific value
-				case "ArrowUp":
-					// Do something for "up arrow" key press.
-					break
-				case "Left": // IE/Edge specific value
-				case "ArrowLeft":
-					// Do something for "left arrow" key press.
-					break
-				case "Right": // IE/Edge specific value
-				case "ArrowRight":
-					// Do something for "right arrow" key press.
-					break
-				case "Enter":
-					// Do something for "enter" or "return" key press.
-					break
-				case "Esc": // IE/Edge specific value
-				case "Escape":
-					// Do something for "esc" key press.
-					break
-				default:
-					return // Quit when this doesn't handle the key event.
-			}
+	function changePosition(wrapper, event) {
+		if (event.defaultPrevented) {
+			return // Do nothing if the event was already processed
+		}
 
-			// Cancel the default action to avoid it being handled twice
-			event.preventDefault()
-		},
-		true,
-	)
+		switch (event.key) {
+			case "Down": // IE/Edge specific value
+			case "ArrowDown":
+				wrapper.top += wrapper.squere.height
+				elStyle.top = wrapper.top + "px"
+				// Do something for "down arrow" key press.
+				break
+			case "Up": // IE/Edge specific value
+			case "ArrowUp":
+				wrapper.top += -wrapper.squere.height
+				elStyle.top = wrapper.top + "px"
+				// Do something for "up arrow" key press.
+				break
+			case "Left": // IE/Edge specific value
+			case "ArrowLeft":
+				wrapper.left += -wrapper.squere.width
+				elStyle.left = wrapper.left + "px"
+				// Do something for "left arrow" key press.
+				break
+			case "Right": // IE/Edge specific value
+			case "ArrowRight":
+				wrapper.left += wrapper.squere.width
+				elStyle.left = wrapper.left + "px"
+				// Do something for "right arrow" key press.
+				break
+			default:
+				return // Quit when this doesn't handle the key event.
+		}
+
+		// Cancel the default action to avoid it being handled twice
+		event.preventDefault()
+	}
+
+	window.addEventListener("keydown", changePosition.bind(null, wrapper), true)
 }
 
 function init() {
-	var snakeJS = new Snake()
-	var snake = document.getElementById("snake")
-	snake.style.width = snakeJS.width + "px"
-	snake.style.height = snakeJS.height + "px"
-	snake.style.backgroundColor = snakeJS.color
+	var snakeJS = new Snake(4, "red", null, document.getElementById("snake"))
 }
-
