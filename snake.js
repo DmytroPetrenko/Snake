@@ -7,14 +7,49 @@ function Squere(width = 10, height = 10, color = "green") {
 	this.width = width
 	this.height = height
 	this.color = color
+	this.left = 200
+	this.top = 200
 }
 
 function Snake(length = 3, color = "green", squere = null, element) {
 	this.length = length
 	this.color = color
+	this.direction = null
 
 	this.squeres = new Array()
 	var squeresWrapper = this.squeres
+
+	this.move = function (speed = 1) {
+		setInterval(
+			() =>
+				squeresWrapper.forEach((squere) => {
+					if (wrapper) {
+						switch (wrapper.direction) {
+							case "left":
+								squere.left += -squere.width
+								squere.style.left = squere.left + "px"
+								break
+							case "right":
+								squere.left += squere.width
+								squere.style.left = squere.left + "px"
+								break
+							case "up":
+								squere.top += -squere.width
+								squere.style.top = squere.top + "px"
+								break
+							case "down":
+								squere.top += squere.width
+								squere.style.top = squere.top + "px"
+								break
+							default:
+								break
+						}
+					}
+				}),
+			1000 * speed,
+		)
+	}
+
 	for (let i = 0; i < this.length; i++) {
 		if (!squere) {
 			this.squere = new Squere()
@@ -47,38 +82,26 @@ function Snake(length = 3, color = "green", squere = null, element) {
 		if (event.defaultPrevented) {
 			return // Do nothing if the event was already processed
 		}
-		var squeres = wrapper.squeres
+
 		switch (event.key) {
 			case "Down": // IE/Edge specific value
 			case "ArrowDown":
-				squeres.forEach((squere) => {
-					squere.top += squere.height
-					squere.style.top = squere.top + "px"
-				})
+				wrapper.direction = "down"
 				// Do something for "down arrow" key press.
 				break
 			case "Up": // IE/Edge specific value
 			case "ArrowUp":
-				squeres.forEach((squere) => {
-					squere.top += -squere.height
-					squere.style.top = squere.top + "px"
-				})
+				wrapper.direction = "up"
 				// Do something for "up arrow" key press.
 				break
 			case "Left": // IE/Edge specific value
 			case "ArrowLeft":
-				squeres.forEach((squere) => {
-					squere.left += -squere.width
-					squere.style.left = squere.left + "px"
-				})
+				wrapper.direction = "left"
 				// Do something for "left arrow" key press.
 				break
 			case "Right": // IE/Edge specific value
 			case "ArrowRight":
-				squeres.forEach((squere) => {
-					squere.left += squere.width
-					squere.style.left = squere.left + "px"
-				})
+				wrapper.direction = "right"
 				// Do something for "right arrow" key press.
 				break
 			default:
@@ -94,4 +117,5 @@ function Snake(length = 3, color = "green", squere = null, element) {
 
 function init() {
 	var snakeJS = new Snake(4, "red", null, document.getElementById("snake"))
+	snakeJS.move()
 }
