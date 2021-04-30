@@ -36,13 +36,12 @@ function Snake(length = 3, color = "green", squere = null, element) {
 		squere.style.position = "absolute"
 		squere.style.left = squere.left + "px"
 		squere.style.top = squere.top + "px"
-		squere.style.backgroundColor = squere.color
+		squere.style.backgroundColor = this.color
 		squere.style.border = "1px solid white"
 		element.insertAdjacentElement("beforeend", squere.squereDoc)
 	})
 
 	var wrapper = this
-
 
 	function changePosition(wrapper, event) {
 		if (event.defaultPrevented) {
