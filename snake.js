@@ -13,54 +13,73 @@ function Snake(length = 3, color = "green", squere = null, element) {
 	this.length = length
 	this.color = color
 
-	if (!squere) {
-		this.squere = new Squere()
-	} else {
-		this.squere = squere
+	this.squeres = new Array()
+	var squeresWrapper = this.squeres
+	for (let i = 0; i < this.length; i++) {
+		if (!squere) {
+			this.squere = new Squere()
+		} else {
+			this.squere = squere
+		}
+
+		this.squere.left = 200 + i * this.squere.width
+		this.squere.top = 200
+
+		squeresWrapper[i] = this.squere
 	}
 
-	this.width = this.squere.width * this.length
-	this.height = this.squere.height
-	this.left = 200
-	this.top = 200
+	this.squeres.forEach((squere) => {
+		squere.squereDoc = document.createElement("div")
+		squere.style = squere.squereDoc.style
+		squere.style.width = squere.width + "px"
+		squere.style.height = squere.height + "px"
+		squere.style.position = "absolute"
+		squere.style.left = squere.left + "px"
+		squere.style.top = squere.top + "px"
+		squere.style.backgroundColor = squere.color
+		squere.style.border = "1px solid white"
+		element.insertAdjacentElement("beforeend", squere.squereDoc)
+	})
+
 	var wrapper = this
 
-	elStyle = element.style
-	elStyle.width = this.width + "px"
-	elStyle.height = this.height + "px"
-	elStyle.backgroundColor = this.color
-	elStyle.position = "absolute"
-	elStyle.left = this.left + "px"
-	elStyle.top = this.top + "px"
 
 	function changePosition(wrapper, event) {
 		if (event.defaultPrevented) {
 			return // Do nothing if the event was already processed
 		}
-
+		var squeres = wrapper.squeres
 		switch (event.key) {
 			case "Down": // IE/Edge specific value
 			case "ArrowDown":
-				wrapper.top += wrapper.squere.height
-				elStyle.top = wrapper.top + "px"
+				squeres.forEach((squere) => {
+					squere.top += squere.height
+					squere.style.top = squere.top + "px"
+				})
 				// Do something for "down arrow" key press.
 				break
 			case "Up": // IE/Edge specific value
 			case "ArrowUp":
-				wrapper.top += -wrapper.squere.height
-				elStyle.top = wrapper.top + "px"
+				squeres.forEach((squere) => {
+					squere.top += -squere.height
+					squere.style.top = squere.top + "px"
+				})
 				// Do something for "up arrow" key press.
 				break
 			case "Left": // IE/Edge specific value
 			case "ArrowLeft":
-				wrapper.left += -wrapper.squere.width
-				elStyle.left = wrapper.left + "px"
+				squeres.forEach((squere) => {
+					squere.left += -squere.width
+					squere.style.left = squere.left + "px"
+				})
 				// Do something for "left arrow" key press.
 				break
 			case "Right": // IE/Edge specific value
 			case "ArrowRight":
-				wrapper.left += wrapper.squere.width
-				elStyle.left = wrapper.left + "px"
+				squeres.forEach((squere) => {
+					squere.left += squere.width
+					squere.style.left = squere.left + "px"
+				})
 				// Do something for "right arrow" key press.
 				break
 			default:
