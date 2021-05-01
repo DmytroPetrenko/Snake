@@ -17,37 +17,41 @@ function Snake(length = 3, color = "green", squere = null, element) {
 	this.direction = null
 
 	this.squeres = new Array()
+	var squeresCopy = new Array()
 	var squeresWrapper = this.squeres
 
 	this.move = function (speed = 1) {
-		setInterval(
-			() =>
-				squeresWrapper.forEach((squere) => {
-					if (wrapper) {
-						switch (wrapper.direction) {
-							case "left":
-								squere.left += -squere.width
-								squere.style.left = squere.left + "px"
-								break
-							case "right":
-								squere.left += squere.width
-								squere.style.left = squere.left + "px"
-								break
-							case "up":
-								squere.top += -squere.width
-								squere.style.top = squere.top + "px"
-								break
-							case "down":
-								squere.top += squere.width
-								squere.style.top = squere.top + "px"
-								break
-							default:
-								break
-						}
+		if (wrapper) {
+			setInterval(function () {
+				if (wrapper.direction) {
+					squeresCopy = squeresWrapper
+					switch (wrapper.direction) {
+						case "left":
+							squeresWrapper[0].left += -squeresWrapper[0].width
+							squeresWrapper[0].style.left = squeresWrapper[0].left + "px"
+							break
+						case "right":
+							squeresWrapper[0].left += squeresWrapper[0].width
+							squeresWrapper[0].style.left = squeresWrapper[0].left + "px"
+							break
+						case "up":
+							squeresWrapper[0].top += -squeresWrapper[0].height
+							squeresWrapper[0].style.top = squeresWrapper[0].top + "px"
+							break
+						case "down":
+							squeresWrapper[0].top += squeresWrapper[0].height
+							squeresWrapper[0].style.top = squeresWrapper[0].top + "px"
+							break
+						default:
+							break
 					}
-				}),
-			1000 * speed,
-		)
+					for (let i = 1; i < squeresWrapper.length; i++) {
+						const element = squeresWrapper[i]
+						squeresWrapper[i] = squeresCopy[i - 1]
+					}
+				}
+			}, 1000 * speed)
+		}
 	}
 
 	for (let i = 0; i < this.length; i++) {
