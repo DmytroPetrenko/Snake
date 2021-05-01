@@ -1,6 +1,6 @@
 window.onload = function () {
+	initRandomSquere(createRandomSquere(), document.getElementById("squere"))
 	init()
-	// doSomethingElse()
 }
 
 function Squere(width = 10, height = 10, color = "green") {
@@ -120,6 +120,29 @@ function Snake(length = 3, color = "green", squere = null, element) {
 	}
 
 	window.addEventListener("keydown", changePosition.bind(null, wrapper), true)
+}
+
+function initRandomSquere(squere, htmlElem) {
+	var newElem = document.createElement("div")
+	squere.style = newElem.style
+	squere.style.width = squere.width + "px"
+	squere.style.height = squere.height + "px"
+	squere.style.position = "absolute"
+	squere.style.left = squere.left + "px"
+	squere.style.top = squere.top + "px"
+	squere.style.backgroundColor = squere.color
+	htmlElem.insertAdjacentElement("beforeend", newElem)
+}
+
+function createRandomSquere() {
+	var randomSquere = new Squere()
+	randomSquere.left = getRandomInt(0, 1000, 10)
+	randomSquere.top = getRandomInt(0, 500, 10)
+	return randomSquere
+}
+
+function getRandomInt(min, max, num) {
+	return Math.floor(Math.floor(Math.random() * (max - min + 1) + min) / num) * num
 }
 
 function init() {
