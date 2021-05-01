@@ -16,15 +16,15 @@ function Snake(length = 3, color = "green", squere = null, element) {
 	this.color = color
 	this.direction = null
 
-	this.squeres = new Array()
-	var squeresCopy = new Array()
+	this.squeres = []
+	var squeresCopy = []
 	var squeresWrapper = this.squeres
 
 	this.move = function (speed = 1) {
 		if (wrapper) {
 			setInterval(function () {
 				if (wrapper.direction) {
-					squeresCopy = squeresWrapper
+					squeresCopy = JSON.parse(JSON.stringify(squeresWrapper))
 					switch (wrapper.direction) {
 						case "left":
 							squeresWrapper[0].left += -squeresWrapper[0].width
@@ -47,7 +47,10 @@ function Snake(length = 3, color = "green", squere = null, element) {
 					}
 					for (let i = 1; i < squeresWrapper.length; i++) {
 						const element = squeresWrapper[i]
-						squeresWrapper[i] = squeresCopy[i - 1]
+						squeresWrapper[i].left = squeresCopy[i - 1].left
+						squeresWrapper[i].top = squeresCopy[i - 1].top
+						squeresWrapper[i].style.left = squeresWrapper[i].left + "px"
+						squeresWrapper[i].style.top = squeresWrapper[i].top + "px"
 					}
 				}
 			}, 1000 * speed)
