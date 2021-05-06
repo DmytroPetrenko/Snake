@@ -1,6 +1,6 @@
 window.onload = function () {
-	initRandomSquere(createRandomSquere(), document.getElementById("squere"))
-	init()
+	var squereCoords = initRandomSquere(createRandomSquere(), document.getElementById("squere"))
+	init(squereCoords)
 }
 
 function Squere(width = 10, height = 10, color = "green") {
@@ -11,7 +11,7 @@ function Squere(width = 10, height = 10, color = "green") {
 	this.top = 200
 }
 
-function Snake(length = 3, color = "green", squere = null, element) {
+function Snake(length = 3, color = "green", squere = null, element, squereTargetCoords) {
 	this.length = length
 	this.color = color
 	this.direction = null
@@ -51,6 +51,33 @@ function Snake(length = 3, color = "green", squere = null, element) {
 						squeresWrapper[i].top = squeresCopy[i - 1].top
 						squeresWrapper[i].style.left = squeresWrapper[i].left + "px"
 						squeresWrapper[i].style.top = squeresWrapper[i].top + "px"
+					}
+
+					if (
+						squeresWrapper[squeresWrapper.length - 1].left == squereTargetCoords.left &&
+						squeresWrapper[squeresWrapper.length - 1].top == squereTargetCoords.top
+					) {
+						wrapper.length += 1
+						var newsquere = new Squere()
+						newsquere.squereDoc = document.createElement("div")
+						newsquere.style = newsquere.squereDoc.style
+						newsquere.style.width = newsquere.width + "px"
+						newsquere.style.height = newsquere.height + "px"
+						newsquere.style.position = "absolute"
+						newsquere.left = squereTargetCoords.left
+						newsquere.top = squereTargetCoords.top
+						newsquere.style.left = newsquere.left + "px"
+						newsquere.style.top = newsquere.top + "px"
+						newsquere.style.backgroundColor = color
+						newsquere.style.border = "1px solid white"
+
+						element.insertAdjacentElement("beforeend", newsquere.squereDoc)
+						squeresWrapper.push(newsquere)
+
+						squereTargetCoords = initRandomSquere(
+							createRandomSquere(),
+							document.getElementById("squere"),
+						)
 					}
 				}
 			}, 1000 * speed)
@@ -123,21 +150,20 @@ function Snake(length = 3, color = "green", squere = null, element) {
 }
 
 function initRandomSquere(squere, htmlElem) {
-	var newElem = document.createElement("div")
-	squere.style = newElem.style
+	squere.style = htmlElem.style
 	squere.style.width = squere.width + "px"
 	squere.style.height = squere.height + "px"
 	squere.style.position = "absolute"
 	squere.style.left = squere.left + "px"
 	squere.style.top = squere.top + "px"
 	squere.style.backgroundColor = squere.color
-	htmlElem.insertAdjacentElement("beforeend", newElem)
+	return squere
 }
 
 function createRandomSquere() {
 	var randomSquere = new Squere()
-	randomSquere.left = getRandomInt(0, 1000, 10)
-	randomSquere.top = getRandomInt(0, 500, 10)
+	randomSquere.left = getRandomInt(150, 200, 10)
+	randomSquere.top = getRandomInt(150, 200, 10)
 	return randomSquere
 }
 
@@ -145,7 +171,7 @@ function getRandomInt(min, max, num) {
 	return Math.floor(Math.floor(Math.random() * (max - min + 1) + min) / num) * num
 }
 
-function init() {
-	var snakeJS = new Snake(4, "red", null, document.getElementById("snake"))
+function init(squereCoords) {
+	var snakeJS = new Snake(4, "red", null, document.getElementById("snake"), squereCoords)
 	snakeJS.move()
 }
