@@ -46,32 +46,22 @@ function Snake(length = 3, color = "green", squere = null, element, squereTarget
 							break
 					}
 					for (let i = 1; i < squeresWrapper.length; i++) {
-						const element = squeresWrapper[i]
 						squeresWrapper[i].left = squeresCopy[i - 1].left
 						squeresWrapper[i].top = squeresCopy[i - 1].top
 						squeresWrapper[i].style.left = squeresWrapper[i].left + "px"
 						squeresWrapper[i].style.top = squeresWrapper[i].top + "px"
 					}
 
+					// add new squere to snake
 					if (
 						squeresWrapper[squeresWrapper.length - 1].left == squereTargetCoords.left &&
 						squeresWrapper[squeresWrapper.length - 1].top == squereTargetCoords.top
 					) {
 						wrapper.length += 1
 						var newsquere = new Squere()
-						newsquere.squereDoc = document.createElement("div")
-						newsquere.style = newsquere.squereDoc.style
-						newsquere.style.width = newsquere.width + "px"
-						newsquere.style.height = newsquere.height + "px"
-						newsquere.style.position = "absolute"
 						newsquere.left = squereTargetCoords.left
 						newsquere.top = squereTargetCoords.top
-						newsquere.style.left = newsquere.left + "px"
-						newsquere.style.top = newsquere.top + "px"
-						newsquere.style.backgroundColor = color
-						newsquere.style.border = "1px solid white"
-
-						element.insertAdjacentElement("beforeend", newsquere.squereDoc)
+						initStyleOfNewPartSnake(newsquere)
 						squeresWrapper.push(newsquere)
 
 						squereTargetCoords = initRandomSquere(
@@ -84,6 +74,7 @@ function Snake(length = 3, color = "green", squere = null, element, squereTarget
 		}
 	}
 
+	// create new array of squeres (snake)
 	for (let i = 0; i < this.length; i++) {
 		if (!squere) {
 			this.squere = new Squere()
@@ -98,16 +89,7 @@ function Snake(length = 3, color = "green", squere = null, element, squereTarget
 	}
 
 	this.squeres.forEach((squere) => {
-		squere.squereDoc = document.createElement("div")
-		squere.style = squere.squereDoc.style
-		squere.style.width = squere.width + "px"
-		squere.style.height = squere.height + "px"
-		squere.style.position = "absolute"
-		squere.style.left = squere.left + "px"
-		squere.style.top = squere.top + "px"
-		squere.style.backgroundColor = this.color
-		squere.style.border = "1px solid white"
-		element.insertAdjacentElement("beforeend", squere.squereDoc)
+		initStyleOfNewPartSnake(squere)
 	})
 
 	var wrapper = this
@@ -144,6 +126,19 @@ function Snake(length = 3, color = "green", squere = null, element, squereTarget
 
 		// Cancel the default action to avoid it being handled twice
 		event.preventDefault()
+	}
+
+	function initStyleOfNewPartSnake(squere) {
+		squere.squereDoc = document.createElement("div")
+		squere.style = squere.squereDoc.style
+		squere.style.width = squere.width + "px"
+		squere.style.height = squere.height + "px"
+		squere.style.position = "absolute"
+		squere.style.left = squere.left + "px"
+		squere.style.top = squere.top + "px"
+		squere.style.backgroundColor = color
+		squere.style.border = "1px solid white"
+		element.insertAdjacentElement("beforeend", squere.squereDoc)
 	}
 
 	window.addEventListener("keydown", changePosition.bind(null, wrapper), true)
