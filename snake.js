@@ -65,7 +65,7 @@ function Snake(length = 3, color = "green", squere = null, element, squereTarget
 						squeresWrapper.push(newsquere)
 
 						squereTargetCoords = initRandomSquere(
-							createRandomSquere(),
+							createRandomSquere(squeresWrapper),
 							document.getElementById("squere"),
 						)
 					}
@@ -155,10 +155,46 @@ function initRandomSquere(squere, htmlElem) {
 	return squere
 }
 
-function createRandomSquere() {
+function createRandomSquere(squeres) {
 	var randomSquere = new Squere()
-	randomSquere.left = getRandomInt(150, 200, 10)
-	randomSquere.top = getRandomInt(150, 200, 10)
+	if (squeres) {
+		randomSquere.left = null
+		randomSquere.top = null
+
+		while (!randomSquere.top) {
+			var maybeTop = getRandomInt(150, 200, 10)
+			var topFlag = true
+
+			squeres.forEach((squere) => {
+				if (squere.top == maybeTop) {
+					topFlag = false
+				}
+			})
+
+			if (topFlag) {
+				randomSquere.top = maybeTop
+			}
+		}
+
+		while (!randomSquere.left) {
+			var maybeLeft = getRandomInt(150, 200, 10)
+			var topFlag = true
+
+			squeres.forEach((squere) => {
+				if (squere.left == maybeLeft) {
+					topFlag = false
+				}
+			})
+
+			if (topFlag) {
+				randomSquere.left = maybeLeft
+			}
+		}
+	} else {
+		randomSquere.left = getRandomInt(150, 200, 10)
+		randomSquere.top = getRandomInt(150, 200, 10)
+	}
+
 	return randomSquere
 }
 
